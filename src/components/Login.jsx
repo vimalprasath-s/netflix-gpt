@@ -1,8 +1,29 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Header from "./Header";
+import { validateLoginForm, validateSignUpForm } from "../utils/validateForm";
 
 const Login = () => {
   const [showLogIn, setShowLogIn] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const name = useRef();
+  const email = useRef();
+  const password = useRef();
+
+  const handleSubmit = () => {
+    setErrorMessage(null);
+    const error = showLogIn
+      ? validateLoginForm(email.current.value, password.current.value)
+      : validateSignUpForm(
+          name.current.value,
+          email.current.value,
+          password.current.value
+        );
+    if (error) {
+      setErrorMessage(error);
+      return;
+    }
+  };
+
   return (
     <div className="min-h-screen relative">
       <Header />
@@ -43,6 +64,7 @@ const Login = () => {
             <input
               type="text"
               placeholder="Full name"
+              ref={name}
               className="border border-white px-4 py-3 rounded text-white mb-4 w-full"
             />
           )}
@@ -50,14 +72,20 @@ const Login = () => {
           <input
             type="text"
             placeholder="Email or mobile number"
+            ref={email}
             className="border border-white px-4 py-3 rounded text-white mb-4 w-full"
           />
           <input
             type="password"
+            ref={password}
             placeholder="Password"
             className="border border-white px-4 py-3 rounded text-white"
           />
-          <button className="bg-red-600 my-6 p-2 rounded text-white font-bold cursor-pointer">
+          {errorMessage && <p className="p-2 text-red-500">{errorMessage}</p>}
+          <button
+            onClick={handleSubmit}
+            className="bg-red-600 my-6 p-2 rounded text-white font-bold cursor-pointer"
+          >
             {showLogIn ? "Sign In" : "Sign Up"}
           </button>
           {showLogIn ? (
