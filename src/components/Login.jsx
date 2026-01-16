@@ -1,6 +1,11 @@
 import { useRef, useState } from "react";
 import Header from "./Header";
 import { validateLoginForm, validateSignUpForm } from "../utils/validateForm";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const Login = () => {
   const [showLogIn, setShowLogIn] = useState(true);
@@ -21,6 +26,41 @@ const Login = () => {
     if (error) {
       setErrorMessage(error);
       return;
+    }
+    if (showLogIn) {
+      // Sign In
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          setErrorMessage(null);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "Error Message --" + errorMessage);
+        });
+    } else {
+      // Sign Up
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+          setErrorMessage(null);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "Error Message --" + errorMessage);
+        });
     }
   };
 
