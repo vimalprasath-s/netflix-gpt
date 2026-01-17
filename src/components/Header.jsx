@@ -1,9 +1,10 @@
-import { signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { removeUser } from "../utils/userSlice";
+import { addUser, removeUser } from "../utils/userSlice";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { LOGO, USER_LOGO } from "../constants/constants";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,13 +12,27 @@ const Header = () => {
   const userData = useSelector((store) => store.user);
   const [showProfile, setShowProfile] = useState(false);
 
-  console.log("userDatauserData", userData);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      // Firebase will give unsubscribe fucntion
+      if (user) {
+        const { uid, displayName, email } = user;
+        dispatch(addUser({ uid: uid, displayName: displayName, email: email }));
+        navigate("/browse");
+      } else {
+        // User is signed out
+        dispatch(removeUser());
+        navigate("/");
+      }
+    });
+    return () => unsubscribe();
+  }, [dispatch, navigate]);
+
   const signOutHandle = () => {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
         dispatch(removeUser());
-        navigate("/");
       })
       .catch((error) => {
         // An error happened.
@@ -26,11 +41,7 @@ const Header = () => {
   };
   return (
     <div className="px-40 py-8 flex justify-between z-20 absolute w-full">
-      <img
-        src="https://images.ctfassets.net/y2ske730sjqp/821Wg4N9hJD8vs5FBcCGg/9eaf66123397cc61be14e40174123c40/Vector__3_.svg?w=460"
-        alt="Netflix-Logo"
-        className="w-40"
-      />
+      <img src={LOGO} alt="Netflix-Logo" className="w-40" />
       <div>
         {/* <select className="py-1 px-2 bg-black text-white rounded cursor-pointer mx-2">
           <option value="en">English</option>
@@ -41,7 +52,7 @@ const Header = () => {
         </button> */}
         {userData && (
           <img
-            src="https://i.pinimg.com/564x/1b/a2/e6/1ba2e6d1d4874546c70c91f1024e17fb.jpg"
+            src={USER_LOGO}
             alt="icon-url"
             className="w-10"
             onClick={() => setShowProfile(!showProfile)}
