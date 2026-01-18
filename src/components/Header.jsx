@@ -40,7 +40,7 @@ const Header = () => {
       });
   };
   return (
-    <div className="px-40 py-8 flex justify-between z-20 absolute w-full">
+    <div className="px-20 py-8 flex justify-between z-20 absolute w-full">
       <img src={LOGO} alt="Netflix-Logo" className="w-40" />
       <div>
         {/* <select className="py-1 px-2 bg-black text-white rounded cursor-pointer mx-2">

@@ -16,3 +16,5 @@ export const API_OPTIONS = {
 export const API_KEY = import.meta.env.VITE_API_KEY;
 
 export const TEMP_TRAILER_KEY = "fJaAYcERf3Y";
+
+export const TMDB_IMAGE_CDN = "https://image.tmdb.org/t/p/w200/";

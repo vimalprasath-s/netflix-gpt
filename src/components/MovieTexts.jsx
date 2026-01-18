@@ -1,6 +1,6 @@
 const MovieTexts = ({ title, description }) => {
   return (
-    <div className="pt-70 pl-40 absolute text-white w-screen aspect-video bg-linear-to-r from-black">
+    <div className="pt-70 pl-20 absolute text-white w-screen aspect-video bg-linear-to-r from-black">
       <h1 className="font-bold text-3xl">{title}</h1>
       <p className="w-1/3 pt-2">{description}</p>
       <div className="pt-6">
