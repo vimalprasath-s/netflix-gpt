@@ -59,7 +59,7 @@ const Header = () => {
           />
         )}
         {showProfile && (
-          <div>
+          <div className="text-white">
             <p>{userData?.displayName}</p>
             <button className="cursor-pointer" onClick={signOutHandle}>
               Sign Out

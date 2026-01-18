@@ -9,8 +9,10 @@ export const API_OPTIONS = {
   method: "GET",
   headers: {
     accept: "application/json",
-    Authorization: `Bearer ${TMDB_BEARER_TOKEN}`,
+    Authorization: TMDB_BEARER_TOKEN,
   },
 };
 
 export const API_KEY = import.meta.env.VITE_API_KEY;
+
+export const TEMP_TRAILER_KEY = "fJaAYcERf3Y";
